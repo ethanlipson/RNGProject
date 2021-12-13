@@ -4,7 +4,12 @@ Final project for cybersecurity course at Stuyvesant High School (September 2021
 
 # Daily Logs
 
-## Tuesday, December 14th
+## Thursday, December 16th
+### Ian
+Created Makefile
+Researched 'reverse-cranking' LCG implementations
+
+## Wednesday, December 15th
 ### Ethan
 Established repository
 Uploaded existing code
