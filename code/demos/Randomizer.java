@@ -22,7 +22,7 @@ class Randomizer {
 		System.out.println("r2 = " + l2);
 		System.out.println();
 
-		for (int i = 0; i < 65536; i++) {
+		for (int i = 0; i < (1 << 16); i++) {
 			long seed = (l1 << 16) + i;
 			if (lcg(seed) >> 16 == l2) {
 				System.out.println("Seed found: " + seed);
