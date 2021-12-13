@@ -8,24 +8,26 @@ import sys
 #I'm using standard input to read numbers,
 #but we could add functionality for arguments.
 def main():
-	givens=[]
-	for line in sys.stdin:
-		givens.append(int(line))
+	# givens=[]
+	# for line in sys.stdin:
+	# 	givens.append(int(line))
+
+	givens = [1865, 7648, 825, 2582]
 	
 	solve_lcg(givens)
 
 
 def solve_lcg(givens):
-	#now for the tricky bit...
+	eqs = [[m, n] for n, m in zip(givens, givens[1:])]
+	subtracted = [[eq[0] - eqs[0][0], eq[1] - eqs[0][1]] for eq in eqs[1:]]
+	if sign(subtracted[0][0]) != sign(subtracted[0][1]):
+		pass
 
-	#subtract equations to get N[k] == X[k]*a mod M
-	N=[]
-	X=[]
-	for i in range(2,len(givens)):
-		N.append(givens[i]-givens[1])
-		X.append(givens[i-1]-givens[0])
 
-	print(list(zip(N,X)))
+def sign(x):
+	if x > 0: return 1
+	if x < 0: return -1
+	return 0
 
 
 def get_prime_factors(n):
@@ -68,3 +70,4 @@ def lcm(*args: int) -> int:
 
 if __name__ == '__main__':
 	main()
+
