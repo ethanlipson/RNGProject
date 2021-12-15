@@ -6,6 +6,6 @@ Final project for cybersecurity course at Stuyvesant High School (September 2021
 
 ## Tuesday, December 14th
 ### Ethan
-Established repository
-Uploaded existing code
-Rewrote LCM function
+Established repository  
+Uploaded existing code  
+Rewrote LCM function  
