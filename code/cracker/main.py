@@ -20,8 +20,22 @@ def main():
 def solve_lcg(givens):
 	eqs = [[m, n] for n, m in zip(givens, givens[1:])]
 	subtracted = [[eq[0] - eqs[0][0], eq[1] - eqs[0][1]] for eq in eqs[1:]]
-	if sign(subtracted[0][0]) != sign(subtracted[0][1]):
-		pass
+	lhs = subtracted[0][0] * abs(subtracted[1][1]) + subtracted[0][1] * subtracted[1][0]
+	lhs = abs(lhs)
+	print(lhs)
+	
+	possible_moduli = []
+	for factor in get_all_factors(lhs):
+		if factor < 7649:
+			continue
+		if factor >= 10000:
+			continue
+		possible_moduli.append(factor)
+	
+	print(possible_moduli)
+		
+		
+			
 
 
 def sign(x):
@@ -57,8 +71,7 @@ def get_all_factors(n):
 	for i in range(0,2**count):
 		factor = 1
 		for j in range(0, count):
-			factor *= prime[j] if i%2 else 1
-			i /= 2
+			factor *= prime[j] if (i>>j)%2 else 1
 		out.add(factor)
 	return out
 
