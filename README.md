@@ -4,7 +4,17 @@ Final project for cybersecurity course at Stuyvesant High School (September 2021
 
 # Daily Logs
 
+## Friday, December 17th
+### Ethan
++
+### Ian
++ 
+
 ## Thursday, December 16th
+### Ethan
++ Worked on LCG reversing tool
++ Worked on modulus calculus
+
 ### Ian
 + Created Makefile
 + Researched 'reverse-cranking' LCG implementations
