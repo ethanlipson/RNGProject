@@ -8,7 +8,7 @@ Final project for cybersecurity course at Stuyvesant High School (September 2021
 ### Ethan
 +
 ### Ian
-+ 
++ Continuted researching 'reverse-cranking' LCG implementations
 
 ## Thursday, December 16th
 ### Ethan
