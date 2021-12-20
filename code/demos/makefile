@@ -1,5 +1,5 @@
 clean:
-	@rm Randomizer.class
+	@rm *.class ; rm *.out
 
 javaDemo: Randomizer.class
 	@java Randomizer

@@ -4,6 +4,10 @@ Final project for cybersecurity course at Stuyvesant High School (September 2021
 
 # Daily Logs
 
+## Monday, December 20th
+### Ian
++ Added C demo with time-based seed-cracking
+
 ## Friday, December 17th
 ### Ethan
 +
