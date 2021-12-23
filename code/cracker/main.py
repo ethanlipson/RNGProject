@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 #feel free to rename this file, lcgcracker sounds lame :(
 
+from functools import reduce
 from math import gcd
 import sys
 
@@ -12,36 +13,31 @@ def main():
 	# for line in sys.stdin:
 	# 	givens.append(int(line))
 
-	givens = [1865, 7648, 825, 2582]
+	givens = [293732, 114329, 934700, 172753, 489332]
 	
 	solve_lcg(givens)
 
 
 def solve_lcg(givens):
-	eqs = [[m, n] for n, m in zip(givens, givens[1:])]
-	subtracted = [[eq[0] - eqs[0][0], eq[1] - eqs[0][1]] for eq in eqs[1:]]
-	lhs = subtracted[0][0] * abs(subtracted[1][1]) + subtracted[0][1] * subtracted[1][0]
-	lhs = abs(lhs)
-	print(lhs)
-	
-	possible_moduli = []
-	for factor in get_all_factors(lhs):
-		if factor < 7649:
-			continue
-		if factor >= 10000:
-			continue
-		possible_moduli.append(factor)
-	
-	print(possible_moduli)
-		
-		
-			
+	m = guess_modulus(givens)
+	print(m)
 
 
-def sign(x):
-	if x > 0: return 1
-	if x < 0: return -1
-	return 0
+def guess_modulus(nums: 'list[int]') -> int:
+	# Subtract each equation from the previous to eliminate constant terms
+	differences = []
+	for i in range(0, len(nums) - 1):
+		differences.append(nums[i+1] - nums[i])
+	
+	# Rearrange equations to be congruent to 0 (mod m)
+	zeroes = []
+	for i in range(0, len(nums) - 3):
+		zeroes.append(differences[i + 2] * differences[i] - differences[i + 1] * differences[i + 1])
+	
+	# Find the GCD of these zeroes
+	return reduce(gcd, zeroes)
+	
+
 
 
 def get_prime_factors(n):
