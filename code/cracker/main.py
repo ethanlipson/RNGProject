@@ -19,8 +19,11 @@ def main():
 
 
 def solve_lcg(givens):
-	m = guess_modulus(givens)
-	print(m)
+	modulus = guess_modulus(givens)
+	print(modulus)
+
+	multiplier = guess_multiplier(givens, modulus)
+	print(multiplier)
 
 
 def guess_modulus(nums: 'list[int]') -> int:
@@ -29,7 +32,7 @@ def guess_modulus(nums: 'list[int]') -> int:
 	for i in range(0, len(nums) - 1):
 		differences.append(nums[i+1] - nums[i])
 	
-	# Rearrange equations to be congruent to 0 (mod m)
+	# Rearrange equations to be congruent to 0 (mod n)
 	zeroes = []
 	for i in range(0, len(nums) - 3):
 		zeroes.append(differences[i + 2] * differences[i] - differences[i + 1] * differences[i + 1])
@@ -38,6 +41,43 @@ def guess_modulus(nums: 'list[int]') -> int:
 	return reduce(gcd, zeroes)
 	
 
+def guess_multiplier(givens: 'list[int]', modulus: int) -> int:
+	# We need to solve a modular linear equation of the form:
+	# ax = b (mod n)
+	
+	# We can solve by multiplying both sides
+	# by the modular inverse of a (mod n),
+	# calculated using the Extended Euclidean Algorithm
+
+	a = (givens[1] - givens[0]) % modulus
+	b = (givens[2] - givens[1]) % modulus
+	inverse = get_modular_inverse(a, modulus)
+
+	return (b * inverse) % modulus
+
+
+# http://www-math.ucdenver.edu/~wcherowi/courses/m5410/exeucalg.html
+def get_modular_inverse(a: int, modulus: int) -> int:
+	dividends = [modulus]
+	divisors = [a]
+	quotients = []
+	remainders = []
+	
+	while True:
+		quotients.append(dividends[-1] // divisors[-1])
+		remainders.append(dividends[-1] - quotients[-1] * divisors[-1])
+
+		if remainders[-1] == 0:
+			break
+
+		dividends.append(divisors[-1])
+		divisors.append(remainders[-1])
+	
+	ps = [0, 1]
+	for i in range(len(quotients) - 1):
+		ps.append((ps[-2] - ps[-1] * quotients[i]) % modulus)
+	
+	return ps[-1]
 
 
 def get_prime_factors(n):
