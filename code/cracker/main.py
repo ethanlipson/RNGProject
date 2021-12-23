@@ -13,8 +13,8 @@ def main():
 	# for line in sys.stdin:
 	# 	givens.append(int(line))
 
-	givens = [293732, 114329, 934700, 172753, 489332]
-	
+	givens = list(map(int, open('nums').read().split(' ')))
+
 	solve_lcg(givens)
 
 
@@ -24,6 +24,9 @@ def solve_lcg(givens):
 
 	multiplier = guess_multiplier(givens, modulus)
 	print(multiplier)
+
+	increment = guess_increment(givens, modulus, multiplier)
+	print(increment)
 
 
 def guess_modulus(nums: 'list[int]') -> int:
@@ -54,6 +57,10 @@ def guess_multiplier(givens: 'list[int]', modulus: int) -> int:
 	inverse = get_modular_inverse(a, modulus)
 
 	return (b * inverse) % modulus
+
+
+def guess_increment(givens: 'list[int]', modulus: int, multiplier: int) -> int:
+	return (givens[1] - givens[0] * multiplier) % modulus
 
 
 # http://www-math.ucdenver.edu/~wcherowi/courses/m5410/exeucalg.html
