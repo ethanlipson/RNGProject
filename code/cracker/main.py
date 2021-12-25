@@ -19,14 +19,19 @@ def main():
 
 
 def solve_lcg(givens):
-	modulus = guess_modulus(givens)
-	print(modulus)
+	greatest_possible_modulus = guess_modulus(givens)
 
-	multiplier = guess_multiplier(givens, modulus)
-	print(multiplier)
+	# The modulus could be greatest_possible_modulus or any of its factors
+	for modulus in sorted(get_all_factors(greatest_possible_modulus), reverse=True):
+		print(f'Testing: {modulus}')
+		multiplier = guess_multiplier(givens, modulus)
+		increment = guess_increment(givens, modulus, multiplier)
 
-	increment = guess_increment(givens, modulus, multiplier)
-	print(increment)
+		if givens[1] == (givens[0] * multiplier + increment) % modulus:
+			print(f'{modulus = }')
+			print(f'{multiplier = }')
+			print(f'{increment = }')
+			break
 
 
 def guess_modulus(nums: 'list[int]') -> int:
@@ -41,6 +46,8 @@ def guess_modulus(nums: 'list[int]') -> int:
 		zeroes.append(differences[i + 2] * differences[i] - differences[i + 1] * differences[i + 1])
 	
 	# Find the GCD of these zeroes
+	# The result is likely to be our modulus, or if not, a multiple of it
+	# The chance that it's exactly our modulus increases with the number of givens
 	return reduce(gcd, zeroes)
 	
 
@@ -117,11 +124,6 @@ def get_all_factors(n):
 			factor *= prime[j] if (i>>j)%2 else 1
 		out.add(factor)
 	return out
-
-
-def lcm(*args: int) -> int:
-	product = reduce(lambda a, b: a * b, args)
-	return product // gcd**(len(args) - 1)
 
 
 if __name__ == '__main__':
