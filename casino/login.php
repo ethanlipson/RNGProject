@@ -3,12 +3,20 @@ include 'common.php';
 
 function lcg_rand()
 {
-	static $seed = 0xDEADBEEFDEADCAFE;
+	global $pdo;
+
 	//a, c, & m are taken from wikipedia to have nice mathematical properties
 	//Courtesy of Donald Knuth
-	define('a', 6364136223846793005);
-	define('c', 1442695040888963407);
-	$seed = ($seed * a + c) & (1 << 64 - 1);
+	define('a', 1103515245);
+	define('c', 12345);
+
+	$seedrow = $pdo->query("SELECT * FROM seeds WHERE name='lcg';")->fetch();
+
+	$seed = $seedrow['seed'];
+	$seed = ($seed * a + c) % (1 << 31);
+
+	$pdo->exec("UPDATE seeds SET seed=$seed WHERE name='lcg';");
+
 	return $seed;
 }
 
@@ -41,7 +49,8 @@ if (isset($_POST['submit'])) {
 		$add_cookie->execute([$cookie, $existing['id']]);
 		setcookie('authentication', $cookie);
 	} else if ($submit == 'login' && $existing) {
-		if ($existing->hashpass == hash('sha256', $password)) {
+
+		if ($existing['hashpass'] == hash('sha256', $password)) {
 			$cookie = lcg_rand();
 			$add_cookie->execute([$cookie, $existing['id']]);
 			setcookie('authentication', $cookie);
@@ -60,8 +69,12 @@ if (isset($_POST['submit'])) {
 
 <html>
 
-<body>
-
+	<body>
+	<button onclick="window.location='/'">
+		Go Home
+	</button>
+	<br />
+	<br />
 	<form method='post' action='<?php echo $_SERVER['PHP_SELF']; ?>'>
 		Username:
 		<input type='text' name='username'>
@@ -73,5 +86,13 @@ if (isset($_POST['submit'])) {
 		<input type='submit' name='submit' value='register'>
 	</form>
 </body>
+
+<script>
+	<?php
+		if ($error) {
+			echo "alert(\"$error\");";
+		}
+	?>
+</script>
 
 </html>

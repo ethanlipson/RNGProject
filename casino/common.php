@@ -28,6 +28,7 @@ $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 $user = new stdClass();
 $user->loggedIn = false;
+$user->isAdmin = false;
 
 if (isset($_COOKIE['authentication'])) {
 	$statement = $pdo->prepare("SELECT * FROM cookies where cookie = ?;");
@@ -37,6 +38,7 @@ if (isset($_COOKIE['authentication'])) {
 		$reqUser = $pdo->query("SELECT * FROM userinfo WHERE id=" . $row['userid'] . ";");
 		$userRow = $reqUser->fetch();
 		$user->username = $userRow['username'];
+		$user->isAdmin = $userRow['isadmin'];
 		$user->loggedIn = true;
 	} else {
 		setcookie('authentication', null, 1);

@@ -39,22 +39,22 @@ def guess_modulus(nums: 'list[int]') -> int:
 	differences = []
 	for i in range(0, len(nums) - 1):
 		differences.append(nums[i+1] - nums[i])
-	
+
 	# Rearrange equations to be congruent to 0 (mod n)
 	zeroes = []
 	for i in range(0, len(nums) - 3):
 		zeroes.append(differences[i + 2] * differences[i] - differences[i + 1] * differences[i + 1])
-	
+
 	# Find the GCD of these zeroes
 	# The result is likely to be our modulus, or if not, a multiple of it
 	# The chance that it's exactly our modulus increases with the number of givens
 	return reduce(gcd, zeroes)
-	
+
 
 def guess_multiplier(givens: 'list[int]', modulus: int) -> int:
 	# We need to solve a modular linear equation of the form:
 	# ax = b (mod n)
-	
+
 	# We can solve by multiplying both sides
 	# by the modular inverse of a (mod n),
 	# calculated using the Extended Euclidean Algorithm
@@ -76,7 +76,7 @@ def get_modular_inverse(a: int, modulus: int) -> int:
 	divisors = [a]
 	quotients = []
 	remainders = []
-	
+
 	while True:
 		quotients.append(dividends[-1] // divisors[-1])
 		remainders.append(dividends[-1] - quotients[-1] * divisors[-1])
@@ -86,11 +86,11 @@ def get_modular_inverse(a: int, modulus: int) -> int:
 
 		dividends.append(divisors[-1])
 		divisors.append(remainders[-1])
-	
+
 	ps = [0, 1]
 	for i in range(len(quotients) - 1):
 		ps.append((ps[-2] - ps[-1] * quotients[i]) % modulus)
-	
+
 	return ps[-1]
 
 
@@ -115,9 +115,19 @@ def get_prime_factors(n):
 #doing it the brute force way took like 5 seconds for big numbers.
 #numbers are not in order.
 def get_all_factors(n):
-	prime = get_prime_factors(n)
+	prime = get_prime_factors(abs(n))
 	count = len(prime)
 	out = set()
+
+	if all(p == prime[0] for p in prime):
+		p = prime[0]
+		f = p
+		while f < abs(n):
+			f*=p
+			out.add(f)
+		return out
+
+
 	for i in range(0,2**count):
 		factor = 1
 		for j in range(0, count):
