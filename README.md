@@ -1,6 +1,7 @@
 # RNG Cracking Project
 
 Final project for cybersecurity course at Stuyvesant High School (September 2021 - January 2022)
+Slides: https://docs.google.com/presentation/d/1_5J2jxZg4ULZXeMiub06Dr4Ba8hJ1KgozY9CpOIuasY/edit?usp=sharing
 
 # Daily Logs
 ## Monday, January 3rd
