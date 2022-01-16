@@ -30,7 +30,7 @@ $user = new stdClass();
 $user->loggedIn = false;
 $user->isAdmin = false;
 
-if (isset($_COOKIE['authentication'])) {
+if (isset($_COOKIE['authentication']) && $_COOKIE['authentication'] != "") {
 	$statement = $pdo->prepare("SELECT * FROM cookies where cookie = ?;");
 	$statement->execute([$_COOKIE['authentication']]);
 	$row = $statement->fetch();
